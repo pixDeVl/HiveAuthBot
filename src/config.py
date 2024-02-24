@@ -12,3 +12,7 @@ class Configuration:
     # OAuth2 stuffs
     CONSUMER_KEY: str = os.getenv('CONSUMER_KEY')
     CONSUMER_SECRET: str = os.getenv('CONSUMER_SECRET')
+
+    # Database stuff
+    DB_URI: str = os.getenv('DB_URI')
+    DB_ECHO: bool = bool(os.getenv('DB_ECHO'))

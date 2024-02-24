@@ -3,7 +3,8 @@ from discord import app_commands
 from discord.ext import commands
 from mwoauth import ConsumerToken, Handshaker
 from src.config import Configuration as config
-
+from src.db.sessionmaker import Session
+from src.db.database import TokenBind
 
 class AuthCommands(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
@@ -16,9 +17,13 @@ class AuthCommands(commands.Cog):
         # Construct handshaker with wiki URI and consumer
         handshaker = Handshaker("https://meta.mirabeta.org/w/index.php",
                                 consumer_token,
-                                callback='http://localhost/oauth-callback')
+                                callback=f'http://localhost/oauth-callback/{interaction.user.id}')
         # Step 1: Initialize -- ask MediaWiki for a temporary key/secret for user
         redirect_url, request_token = handshaker.initiate()
+
+        session = Session()
+        session.add(TokenBind(token=request_token.key, secret=request_token.secret, discord_id=interaction.user.id))
+        session.commit()
         await interaction.response.send_message(f"[bwap]({redirect_url})", ephemeral=True)
 
 

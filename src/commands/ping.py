@@ -7,7 +7,7 @@ class Ping(discord.ext.commands.Cog, name='ping'):
 
     @discord.ext.commands.command()
     async def ping(self, interaction: discord.Interaction):
-        async def ping(self, interaction: discord.Interaction):
+        async def ping(self, interaction: discord.Interaction) -> None:
             """Sents a Pong! back to the caller with the current latency
 
             Args:
